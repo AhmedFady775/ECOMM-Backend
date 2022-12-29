@@ -80,11 +80,14 @@ export const login = async (req, res) => {
     res.status(401).send({ message: "Invalid email or password" });
 }
 
+
 export const register = async (req, res) => {
+    const salt = await bcrypt.genSalt();
+
     const newUser = new User({
         name: req.body.name,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password),
+        password: bcrypt.hashSync(req.body.password, salt),
     });
     const user = await newUser.save();
     res.send({
@@ -92,6 +95,17 @@ export const register = async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        token: generateToken(user),
+        token: jwt.sign(
+            {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "3d",
+            }
+        )
     });
 }
