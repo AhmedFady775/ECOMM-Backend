@@ -2,11 +2,6 @@ import Order from "../models/Order.js";
 
 
 
-export const getMyOrders = async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
-    res.send(orders);
-}
-
 export const addOrder = async (req, res) => {
     const newOrder = new Order({
         orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
@@ -22,8 +17,13 @@ export const addOrder = async (req, res) => {
     res.status(201).send({ message: 'New Order Created', order });
 }
 
-export const getOrders = async (req, res) => {
+export const getMyOrders = async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
+    res.send(orders);
+}
+
+export const getOrders = async (req, res) => {
+    const orders = await Order.find().populate('user', 'name');
     res.send(orders);
 }
 

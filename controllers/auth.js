@@ -56,9 +56,8 @@ export const login = async (req, res) => {
     if (user) {
         if (bcrypt.compareSync(req.body.password, user.password)) {
             res.send({
-                _id: user._id,
-                name: user.name,
-                userName: user.userName,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 email: user.email,
                 isAdmin: user.isAdmin,
                 token: jwt.sign(
@@ -85,14 +84,17 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt();
 
     const newUser = new User({
-        name: req.body.name,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
         email: req.body.email,
+        isAdmin: false,
         password: bcrypt.hashSync(req.body.password, salt),
     });
     const user = await newUser.save();
     res.send({
         _id: user._id,
-        name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         isAdmin: user.isAdmin,
         token: jwt.sign(
