@@ -4,9 +4,9 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/", isAuth, getProducts)
+router.get("/", getProducts)
 router.post("/create", isAuth, isAdmin, addProduct)
-router.get("/:id", isAuth, getProduct)
+router.get("/:id", getProduct)
 router.delete("/:id", isAuth, isAdmin, removeProduct)
 router.put("/:id", isAuth, isAdmin, editProduct)
 
