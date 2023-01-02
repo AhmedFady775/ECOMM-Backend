@@ -52,7 +52,7 @@ const upload = multer({ storage });
 /* ROUTES */
 app.post("/auth/register", upload.single("picture"), register)
 app.use("/auth", authRoutes)
-app.use("/user", usersRoutes)
+app.use("/users", usersRoutes)
 app.use("/products", productsRoutes)
 app.use("/orders", orderRouters)
 
