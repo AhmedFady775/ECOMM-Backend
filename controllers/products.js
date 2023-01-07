@@ -1,14 +1,24 @@
 import Product from "../models/Product.js";
 
+const PAGE_SIZE = 5;
 
 export const getProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-        res.status(200).json(products);
+        const page = req.query.page || 1;
+        const perPage = req.query.perPage || 5;
+        const count = await Product.countDocuments({});
+        const products = await Product.find({})
+            .skip((page - 1) * parseInt(perPage))
+            .limit(parseInt(perPage));
+        res.status(200).json({ products, count: Math.ceil(count / perPage) });
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
 };
+
+
+
+
 
 export const getProduct = async (req, res) => {
     try {
@@ -63,7 +73,7 @@ export const editProduct = async (req, res) => {
         product.name = req.body.name;
         product.slug = req.body.slug;
         product.category = req.body.category;
-        product.description = req.body.description;
+        product.descreption = req.body.description;
         product.countInStock = req.body.countInStock;
         product.price = req.body.price;
         product.image = req.body.image;

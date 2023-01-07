@@ -5,7 +5,7 @@ import express from "express";
 const router = express.Router();
 
 router.get("/", getProducts)
-router.post("/create", isAuth, isAdmin, addProduct)
+router.post("/create", addProduct)
 router.get("/:id", getProduct)
 router.delete("/:id", isAuth, isAdmin, removeProduct)
 router.put("/:id", isAuth, isAdmin, editProduct)
