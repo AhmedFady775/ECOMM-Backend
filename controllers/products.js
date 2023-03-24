@@ -4,7 +4,7 @@ import Product from "../models/Product.js";
 export const getProductsPaged = async (req, res) => {
     try {
         const page = req.query.page || 1;
-        const perPage = req.query.perPage || 8;
+        const perPage = req.query.perPage || 9;
         const count = await Product.countDocuments({});
         const products = await Product.find({})
             .skip((page - 1) * parseInt(perPage))
