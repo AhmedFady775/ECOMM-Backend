@@ -57,7 +57,11 @@ export const getProductsPaged = async (req, res) => {
             ...priceFilter,
             ...BrandFilter,
         });
-        const brands = await Product.find().distinct('brand');
+        const brands = await Product.find({
+            ...categoryFilter,
+            ...priceFilter,
+            ...BrandFilter,
+        }).distinct('brand');
         res.status(200).json({
             brands,
             products,
