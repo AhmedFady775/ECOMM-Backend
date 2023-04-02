@@ -1,32 +1,99 @@
 import Product from "../models/Product.js";
 
 
+
+const PAGE_SIZE = 9;
+
 export const getProductsPaged = async (req, res) => {
     try {
-        const page = req.query.page || 1;
-        const perPage = req.query.perPage || 9;
+        // const page = req.query.page || 1;
+        // const perPage = req.query.perPage || PAGE_SIZE;
+        // const sortPrice = req.query.price ? { price: req.query.price } : {};
+        // const filterBrand = req.query.brand ? { brand: req.query.brand } : {};
+        // const count = await Product.countDocuments({});
+
+        const { query } = req;
+        const pageSize = query.pageSize || PAGE_SIZE;
+        const page = query.page || 1;
+        const price = query.price || '';
+        const order = query.order || '';
+        const category = req.query.category || '';
+        const brand = req.query.brand || '';
+
+        const priceFilter =
+            price && price !== 'all'
+                ? {
+                    // 1-50
+                    price: {
+                        $gte: Number(price.split('-')[0]),
+                        $lte: Number(price.split('-')[1]),
+                    },
+                }
+                : {};
+        const sortOrder =
+            order === 'featured'
+                ? { featured: -1 }
+                : order === 'lowest'
+                    ? { price: 1 }
+                    : order === 'highest'
+                        ? { price: -1 }
+                        : order === 'newest'
+                            ? { createdAt: -1 }
+                            : { _id: -1 };
+
+        const categoryFilter = category && category !== 'all' ? { category } : {};
+        const BrandFilter = brand && brand !== 'all' ? { brand } : {};
+        const products = await Product.find({
+            ...categoryFilter,
+            ...priceFilter,
+            ...BrandFilter,
+        })
+            .sort(sortOrder)
+            .skip(pageSize * (page - 1))
+            .limit(pageSize);
+
+        const countProducts = await Product.countDocuments({
+            ...categoryFilter,
+            ...priceFilter,
+            ...BrandFilter,
+        });
+
+        res.status(200).json({
+            products,
+            countProducts,
+            page,
+            pages: Math.ceil(countProducts / pageSize),
+        });
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+};
+
+export const getBrands = async (req, res) => {
+    try {
+        const brands = await Product.find().distinct('brand');
+        res.status(200).json(brands);
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+}
+
+export const getQueriesPost = async (req, res) => {
+    try {
+        const page = req.body.page || 1;
+        const perPage = req.body.perPage || 9;
+        const sortPrice = req.body.price ? { price: req.body.price } : {};
+        const filterBrand = req.body.brandFilter ? { brand: { $in: request.body.brandFilter } } : {}
         const count = await Product.countDocuments({});
-        const products = await Product.find({})
+        const products = await Product.find(filterBrand)
             .skip((page - 1) * parseInt(perPage))
-            .limit(parseInt(perPage));
+            .limit(parseInt(perPage))
+            .sort(sortPrice);
         res.status(200).json({ products, count: Math.ceil(count / perPage) });
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
-};
-
-
-export const getProducts = async (req, res) => {
-    try {
-        const products = await Product.find({})
-        const count = await Product.countDocuments({});
-        res.status(200).json({ products, count });
-    } catch (err) {
-        res.status(404).json({ message: err.message });
-    }
-};
-
-
+}
 
 export const getProduct = async (req, res) => {
     try {
