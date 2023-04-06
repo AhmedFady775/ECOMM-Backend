@@ -6,10 +6,15 @@ const CategorySchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        Products: [
+        brands: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Product",
+                name: {
+                    type: String,
+                    required: true,
+                },
+                logo: {
+                    type: String,
+                }
             }
         ],
     },

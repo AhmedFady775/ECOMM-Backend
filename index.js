@@ -13,8 +13,7 @@ import authRoutes from "./routes/auth.js"
 import usersRoutes from "./routes/users.js"
 import productsRoutes from "./routes/products.js"
 import orderRouters from "./routes/order.js"
-
-
+import CategoriesRouters from "./routes/category.js"
 
 
 
@@ -55,6 +54,7 @@ app.use("/auth", authRoutes)
 app.use("/users", usersRoutes)
 app.use("/products", productsRoutes)
 app.use("/orders", orderRouters)
+app.use("/categories", CategoriesRouters)
 
 
 

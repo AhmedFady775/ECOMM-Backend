@@ -10,3 +10,16 @@ export const getCategories = async (req, res) => {
     }
 };
 
+
+export const postCategories = async (req, res) => {
+    try {
+        const newCategory = new Category({
+            name: req.body.name,
+            brands: req.body.brands,
+        });
+        const category = await newCategory.save();
+        res.status(200).json(category);
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+};

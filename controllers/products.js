@@ -74,6 +74,14 @@ export const getProductsPaged = async (req, res) => {
     }
 };
 
+export const getBrands = async (req, res) => {
+    try {
+        const brands = await Product.find().distinct('brand');
+        res.status(200).json(brands);
+    } catch (err) {
+        res.status(404).json({ message: err.message });
+    }
+}
 
 export const getQueriesPost = async (req, res) => {
     try {
