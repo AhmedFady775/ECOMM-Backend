@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/create", postCategories);
 router.get("/", getCategories);
-router.get("/:name", getCategory);
+router.get("/:id", getCategory);
 
 
 

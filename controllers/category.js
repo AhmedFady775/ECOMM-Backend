@@ -12,9 +12,9 @@ export const getCategories = async (req, res) => {
 
 export const getCategory = async (req, res) => {
     try {
-        const { name } = req.params;
-        const category = await Category.find(name)
-        res.status(200).json({ category });
+        const { id } = req.params;
+        const category = await Category.findById(id)
+        res.status(200).json(category);
     } catch (err) {
         res.status(404).json({ message: err.message });
     }
