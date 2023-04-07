@@ -112,31 +112,19 @@ export const getProduct = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
-        const {
-            name,
-            slug,
-            category,
-            descreption,
-            image,
-            images,
-            price,
-            countInStock,
-            brand,
-            numReviews,
-            rating
-        } = req.body;
+        const { body } = req;
         const newProduct = new Product({
-            name,
-            slug,
-            category,
-            descreption,
-            image,
-            images,
-            price,
-            countInStock,
-            brand,
-            numReviews,
-            rating
+            name: body.name,
+            slug: body.slug,
+            category: body.category,
+            descreption: body.description,
+            image: body.image,
+            images: body.images,
+            price: body.price,
+            countInStock: body.countInStock,
+            brand: body.brand,
+            numReviews: body.numReviews,
+            rating: body.rating,
         });
         const savedProduct = await newProduct.save();
         res.status(201).json({ message: "Post Created", savedProduct });
