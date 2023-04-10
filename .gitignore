@@ -6,8 +6,6 @@
 .pnp.js
 .env
 
-# Secret file
-.env
 
 # testing
 /coverage
