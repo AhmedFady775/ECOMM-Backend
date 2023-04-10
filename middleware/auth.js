@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 // export const verifyToken = async (req, res, next) => {
 //     try {
@@ -20,7 +20,7 @@ import jwt from "jsonwebtoken";
 //     }
 // };
 
-export const isAdmin = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     if (req.user && req.user.isAdmin) {
         next();
     } else {
@@ -28,7 +28,7 @@ export const isAdmin = (req, res, next) => {
     }
 };
 
-export const isAuth = (req, res, next) => {
+const isAuth = (req, res, next) => {
     const authorization = req.headers.authorization;
     if (authorization) {
         const token = authorization.slice(7, authorization.length); // Bearer XXXXXX
@@ -44,3 +44,5 @@ export const isAuth = (req, res, next) => {
         res.status(401).send({ message: "No Token" });
     }
 };
+
+module.exports = { isAdmin, isAuth };

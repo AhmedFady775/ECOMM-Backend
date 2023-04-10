@@ -1,10 +1,10 @@
-import User from "../models/User.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+const User = require("../models/User.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 
 
-export const getUsers = async (req, res) => {
+const getUsers = async (req, res) => {
     try {
         const users = await User.find();
         res.status(200).json(users);
@@ -13,7 +13,7 @@ export const getUsers = async (req, res) => {
     }
 };
 
-export const getUser = async (req, res) => {
+const getUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
@@ -25,7 +25,7 @@ export const getUser = async (req, res) => {
 
 
 
-export const RemoveUser = async (req, res) => {
+const RemoveUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findById(id);
@@ -37,7 +37,7 @@ export const RemoveUser = async (req, res) => {
 };
 
 
-export const editUser = async (req, res) => {
+const editUser = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
         user.firstName = req.body.firstName || user.firstName;
@@ -74,3 +74,4 @@ export const editUser = async (req, res) => {
 }
 
 
+module.exports = { getUsers, getUser, RemoveUser, editUser };

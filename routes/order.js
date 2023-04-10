@@ -1,6 +1,6 @@
-import express from "express";
-import { getOrder, getOrders, addOrder, getMyOrders, summary } from "../controllers/order.js";
-import { isAdmin, isAuth } from "../middleware/auth.js";
+const express = require("express");
+const { getOrder, getOrders, addOrder, getMyOrders, summary } = require("../controllers/order.js");
+const { isAdmin, isAuth } = require("../middleware/auth.js");
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router.post("/create", isAuth, addOrder)
 router.get("/:id", isAuth, getOrder)
 
 
-export default router;
+module.exports = router;

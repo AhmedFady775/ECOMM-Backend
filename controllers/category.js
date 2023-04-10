@@ -1,6 +1,6 @@
-import Category from "../models/Categories.js";
+const Category = require("../models/Categories.js");
 
-export const getCategories = async (req, res) => {
+const getCategories = async (req, res) => {
     try {
         const count = await Category.countDocuments({});
         const categories = await Category.find()
@@ -10,7 +10,7 @@ export const getCategories = async (req, res) => {
     }
 };
 
-export const getCategory = async (req, res) => {
+const getCategory = async (req, res) => {
     try {
         const category = await Category.findOne({ name: req.params.name });
         res.status(200).json(category);
@@ -20,7 +20,7 @@ export const getCategory = async (req, res) => {
 };
 
 
-export const postCategories = async (req, res) => {
+const postCategories = async (req, res) => {
     try {
         const newCategory = new Category({
             name: req.body.name,
@@ -32,3 +32,5 @@ export const postCategories = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 };
+
+module.exports = { getCategories, getCategory, postCategories };

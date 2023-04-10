@@ -1,24 +1,18 @@
-import express from "express";
-import bodyParser from "body-parser";
-import mongoose from "mongoose";
-import cors from "cors";
-import dotenv from "dotenv";
-// import multer from "multer";
-import helmet from "helmet";
-import morgan from "morgan";
-import path from "path";
-import { fileURLToPath } from "url";
-import { register } from "./controllers/auth.js"
-import authRoutes from "./routes/auth.js"
-import usersRoutes from "./routes/users.js"
-import productsRoutes from "./routes/products.js"
-import orderRouters from "./routes/order.js"
-import CategoriesRouters from "./routes/category.js"
-
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const path = require("path");
+const { register } = require("./controllers/auth.js")
+const authRoutes = require("./routes/auth.js")
+const usersRoutes = require("./routes/users.js")
+const productsRoutes = require("./routes/products.js")
+const orderRouters = require("./routes/order.js")
+const CategoriesRouters = require("./routes/category.js")
+const uploadRouter = require("./routes/upload.js")
 
 
 /* DEFAULT SETTINGS */
@@ -32,20 +26,8 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors())
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 
-/* FILE STORAGE */
-
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, "public/assets");
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, file.originalname);
-//     },
-// });
-// const upload = multer({ storage });
 
 
 /* ROUTES */
@@ -55,6 +37,9 @@ app.use("/users", usersRoutes)
 app.use("/products", productsRoutes)
 app.use("/orders", orderRouters)
 app.use("/categories", CategoriesRouters)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', uploadRouter);
+
 
 
 

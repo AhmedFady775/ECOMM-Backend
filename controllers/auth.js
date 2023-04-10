@@ -1,6 +1,6 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User.js");
 
 /* REGISTER USER */
 // export const register = async (req, res) => {
@@ -51,7 +51,7 @@ import User from "../models/User.js";
 
 
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
         if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -80,7 +80,7 @@ export const login = async (req, res) => {
 }
 
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
     const salt = await bcrypt.genSalt();
 
     const newUser = new User({
@@ -111,3 +111,5 @@ export const register = async (req, res) => {
         )
     });
 }
+
+module.exports = { register, login };

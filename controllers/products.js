@@ -1,10 +1,8 @@
-import Product from "../models/Product.js";
-
-
+const Product = require("../models/Product.js");
 
 const PAGE_SIZE = 9;
 
-export const getProductsPaged = async (req, res) => {
+const getProductsPaged = async (req, res) => {
     try {
         // const page = req.query.page || 1;
         // const perPage = req.query.perPage || PAGE_SIZE;
@@ -74,7 +72,7 @@ export const getProductsPaged = async (req, res) => {
     }
 };
 
-export const getBrands = async (req, res) => {
+const getBrands = async (req, res) => {
     try {
         const brands = await Product.find().distinct('brand');
         res.status(200).json(brands);
@@ -83,7 +81,7 @@ export const getBrands = async (req, res) => {
     }
 }
 
-export const getQueriesPost = async (req, res) => {
+const getQueriesPost = async (req, res) => {
     try {
         const page = req.body.page || 1;
         const perPage = req.body.perPage || 9;
@@ -100,7 +98,7 @@ export const getQueriesPost = async (req, res) => {
     }
 }
 
-export const getProduct = async (req, res) => {
+const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
@@ -110,7 +108,7 @@ export const getProduct = async (req, res) => {
     }
 };
 
-export const addProduct = async (req, res) => {
+const addProduct = async (req, res) => {
     try {
         const { body } = req;
         const newProduct = new Product({
@@ -127,14 +125,14 @@ export const addProduct = async (req, res) => {
             rating: body.rating,
         });
         const savedProduct = await newProduct.save();
-        res.status(201).json({ message: "Post Created", savedProduct });
+        res.status(201).json({ message: "Product Created", savedProduct });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
 
 
-export const editProduct = async (req, res) => {
+const editProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
@@ -153,7 +151,7 @@ export const editProduct = async (req, res) => {
     }
 };
 
-export const removeProduct = async (req, res) => {
+const removeProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await Product.findById(id);
@@ -163,3 +161,5 @@ export const removeProduct = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 };
+
+module.exports = { editProduct, getProductsPaged, getQueriesPost, getProduct, addProduct, removeProduct, getBrands };
